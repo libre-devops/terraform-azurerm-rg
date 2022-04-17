@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "main_rg" {
   tags = var.tags
 }
 
-resource "azurerm_management_lock" "resource_group_level_lock" {
+resource "azurerm_management_lock" "rg_lock" {
   name       = "lock-${var.rg_name}"
   scope      = azurerm_resource_group.main_rg.id
   lock_level = var.lock_level
