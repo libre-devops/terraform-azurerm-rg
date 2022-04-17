@@ -1,8 +1,14 @@
 # Example Usage
 
 ```hcl
-```
+module "rg" {
+  source = "../terraform-azurerm-rg"
 
+  rg_name    = "example-rg"
+  lock_level = "CanNotDelete"
+  tags       = local.tags
+}
+```
 ## Requirements
 
 No requirements.
@@ -21,7 +27,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_management_lock.resource_group_level_lock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_lock) | resource |
+| [azurerm_management_lock.rg_lock](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_lock) | resource |
 | [azurerm_resource_group.main_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 
 ## Inputs
