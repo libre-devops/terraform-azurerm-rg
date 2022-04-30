@@ -1,12 +1,3 @@
-variable "rg_name" {
-  description = "The name of the resource group, this module does not create a resource group, it is expecting the value of a resource group already exists"
-  type        = string
-  validation {
-    condition     = length(var.rg_name) > 1 && length(var.rg_name) <= 24
-    error_message = "Resource group name is not valid."
-  }
-}
-
 variable "location" {
   description = "The location for this resource to be put in"
   type        = string
@@ -19,6 +10,15 @@ variable "lock_level" {
   validation {
     condition     = var.lock_level == "" || var.lock_level == "CanNotDelete" || var.lock_level == "ReadOnly"
     error_message = "The name of the log is not valid."
+  }
+}
+
+variable "rg_name" {
+  description = "The name of the resource group, this module does not create a resource group, it is expecting the value of a resource group already exists"
+  type        = string
+  validation {
+    condition     = length(var.rg_name) > 1 && length(var.rg_name) <= 24
+    error_message = "Resource group name is not valid."
   }
 }
 
