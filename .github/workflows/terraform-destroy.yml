@@ -37,6 +37,8 @@ jobs:
           run-terraform-plan: false
           run-terraform-plan-destroy: true
           run-terraform-destroy: true
+          # This module declares lock_level as intent but creates no lock, so the lock-dance is not needed.
+          remove-resource-group-locks-before-tf-run: false
           arm-client-id: ${{ vars.AZURE_CLIENT_ID }}
           arm-tenant-id: ${{ vars.AZURE_TENANT_ID }}
           arm-subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
