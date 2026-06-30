@@ -113,3 +113,33 @@ run "rejects_an_invalid_lock_level" {
 
   expect_failures = [var.resource_groups]
 }
+
+run "rejects_a_name_over_90_characters" {
+  command = plan
+
+  variables {
+    resource_groups = [
+      {
+        name     = "rg-${join("", [for i in range(95) : "x"])}"
+        location = "uksouth"
+      },
+    ]
+  }
+
+  expect_failures = [var.resource_groups]
+}
+
+run "rejects_invalid_name_characters" {
+  command = plan
+
+  variables {
+    resource_groups = [
+      {
+        name     = "rg ldo uks tst bad!"
+        location = "uksouth"
+      },
+    ]
+  }
+
+  expect_failures = [var.resource_groups]
+}

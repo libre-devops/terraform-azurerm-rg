@@ -25,8 +25,13 @@ variable "resource_groups" {
   default = []
 
   validation {
-    condition     = alltrue([for rg in var.resource_groups : length(trimspace(rg.name)) > 0])
-    error_message = "Each resource_groups[*].name must be a non-empty string."
+    condition     = alltrue([for rg in var.resource_groups : length(trimspace(rg.name)) >= 1 && length(rg.name) <= 90])
+    error_message = "Each resource_groups[*].name must be 1 to 90 characters (the Azure resource group name limit)."
+  }
+
+  validation {
+    condition     = alltrue([for rg in var.resource_groups : can(regex("^[a-zA-Z0-9_().-]+$", rg.name)) && !endswith(rg.name, ".")])
+    error_message = "Each resource_groups[*].name may contain only letters, digits, hyphens, underscores, parentheses, and periods, and must not end with a period."
   }
 
   validation {
