@@ -153,6 +153,7 @@ No modules.
 | <a name="output_lock_levels"></a> [lock\_levels](#output\_lock\_levels) | Declared management lock level per resource group. Intent only: applied operationally by the action lock-dance or the just azure-rg-lock recipe, not by this module. |
 | <a name="output_managed_by"></a> [managed\_by](#output\_managed\_by) | Map of resource group name to its managed\_by value (null when unset). |
 | <a name="output_names"></a> [names](#output\_names) | Map of resource group name to its name. |
+| <a name="output_resource_group_ids_zipmap"></a> [resource\_group\_ids\_zipmap](#output\_resource\_group\_ids\_zipmap) | Map of resource group name to a { name, id } object, so the whole object can be passed where something needs the name and id together. |
 | <a name="output_resource_groups"></a> [resource\_groups](#output\_resource\_groups) | The full azurerm\_resource\_group resources, keyed by name. |
 | <a name="output_tags"></a> [tags](#output\_tags) | Map of resource group name to its tags. |
 <!-- END_TF_DOCS -->

@@ -23,6 +23,11 @@ output "names" {
   value       = { for k, v in azurerm_resource_group.this : k => v.name }
 }
 
+output "resource_group_ids_zipmap" {
+  description = "Map of resource group name to a { name, id } object, so the whole object can be passed where something needs the name and id together."
+  value       = { for k, v in azurerm_resource_group.this : v.name => { name = v.name, id = v.id } }
+}
+
 output "resource_groups" {
   description = "The full azurerm_resource_group resources, keyed by name."
   value       = azurerm_resource_group.this

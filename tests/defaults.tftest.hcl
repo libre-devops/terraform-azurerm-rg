@@ -25,6 +25,11 @@ run "creates_the_resource_group" {
     condition     = length(azurerm_resource_group.this) == length(var.resource_groups)
     error_message = "One resource group should be created per list entry."
   }
+
+  assert {
+    condition     = output.resource_group_ids_zipmap["rg-ldo-uks-tst-rg"].name == "rg-ldo-uks-tst-rg"
+    error_message = "resource_group_ids_zipmap should map each name to a { name, id } object."
+  }
 }
 
 run "timeouts_default_to_azurerm_defaults" {
