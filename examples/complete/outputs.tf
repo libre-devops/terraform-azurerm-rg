@@ -3,9 +3,9 @@ output "ids" {
   value       = module.rg.ids
 }
 
-output "lock_ids" {
-  description = "Map of resource group name to its management lock id."
-  value       = module.rg.lock_ids
+output "lock_levels" {
+  description = "Declared management lock level per resource group (applied operationally, not by the module)."
+  value       = module.rg.lock_levels
 }
 
 output "names" {

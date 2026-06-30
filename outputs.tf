@@ -8,9 +8,14 @@ output "locations" {
   value       = { for k, v in azurerm_resource_group.this : k => v.location }
 }
 
-output "lock_ids" {
-  description = "Map of resource group name to its management lock id (only groups that set a lock_level)."
-  value       = { for k, v in azurerm_management_lock.this : k => v.id }
+output "lock_levels" {
+  description = "Declared management lock level per resource group. Intent only: applied operationally by the action lock-dance or the just azure-rg-lock recipe, not by this module."
+  value       = { for k, v in local.resource_group_map : k => v.lock_level }
+}
+
+output "managed_by" {
+  description = "Map of resource group name to its managed_by value (null when unset)."
+  value       = { for k, v in azurerm_resource_group.this : k => v.managed_by }
 }
 
 output "names" {
@@ -21,4 +26,9 @@ output "names" {
 output "resource_groups" {
   description = "The full azurerm_resource_group resources, keyed by name."
   value       = azurerm_resource_group.this
+}
+
+output "tags" {
+  description = "Map of resource group name to its tags."
+  value       = { for k, v in azurerm_resource_group.this : k => v.tags }
 }

@@ -21,9 +21,10 @@ module "tags" {
   }
 }
 
-# Complete call: multiple resource groups, each tagged, demonstrating management locks at both
-# levels. With the terraform-azure action, the lock-dance removes these for the apply and re-adds
-# them after; standalone, the locks behave as normal Azure locks.
+# Complete call: multiple resource groups exercising the full surface, tags, declared lock levels,
+# managed_by, and overridden timeouts. The lock_level is declared intent only (this module does not
+# create the lock); it is applied operationally by the terraform-azure action's lock-dance or the
+# `just azure-rg-lock` recipe.
 module "rg" {
   source = "../../"
 
@@ -33,6 +34,8 @@ module "rg" {
       location   = local.location
       tags       = module.tags.tags
       lock_level = "CanNotDelete"
+      managed_by = "terraform-azurerm-rg"
+      timeouts   = { create = "60m" }
     },
     {
       name       = "rg-${var.short}-${var.loc}-${terraform.workspace}-003"

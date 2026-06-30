@@ -27,13 +27,21 @@ optional management lock.
 ## Overview
 
 A `for_each` over a `list(object)` so one call can create many resource groups, each with its own
-tags and an optional management lock (`CanNotDelete` or `ReadOnly`). Each lock `depends_on` the
-resource groups, so it is created after its group and removed first on `terraform destroy`.
+tags, optional `managed_by`, and overridable per-action `timeouts` (defaulting to the azurerm defaults:
+create/update/delete 90m, read 5m).
 
-The lock is a self-contained Terraform resource, so the module works anywhere, even copied out of the
-Libre DevOps ecosystem. When run through the `libre-devops/terraform-azure` action, a lock-dance
-(remove the lock for the apply, re-add it after) keeps an apply from being blocked, but that is an
-operational convenience the module never depends on.
+### Management locks are operational, not a module resource
+
+`lock_level` (`""`, `CanNotDelete`, or `ReadOnly`) is **declared intent only**, surfaced on the
+`lock_levels` output. This module does **not** create an `azurerm_management_lock`, on purpose: a
+`ReadOnly` lock blocks all writes, and a lock resource here could only `depends_on` the resource group,
+so it would be a sibling of anything you deploy into that group and would race it. Locking is therefore
+applied **operationally**, after the resources exist and removed before any change, exactly like the
+storage firewall dance:
+
+- the `libre-devops/terraform-azure` action's lock-dance (opt in with
+  `remove-resource-group-locks-before-tf-run`, off by default), or
+- the `just azure-rg-lock <rg> <level>` / `just azure-remove-lock <rg>` recipes for manual use.
 
 ## Usage
 
@@ -55,7 +63,7 @@ module "rg" {
       name       = "rg-ldo-uks-prd-001"
       location   = "uksouth"
       tags       = module.tags.tags
-      lock_level = "CanNotDelete" # "", "CanNotDelete", or "ReadOnly"
+      lock_level = "CanNotDelete" # declared intent; applied operationally, not by this module
     },
   ]
 }
@@ -63,8 +71,9 @@ module "rg" {
 
 ## Examples
 
-- [`examples/minimal`](./examples/minimal) - one resource group, no lock.
-- [`examples/complete`](./examples/complete) - multiple resource groups with locks at both levels.
+- [`examples/minimal`](./examples/minimal) - one resource group, defaults only.
+- [`examples/complete`](./examples/complete) - multiple resource groups exercising tags, declared lock
+  levels, `managed_by`, and overridden timeouts.
 
 Both examples call the tags module first, then this module, so they advertise both together.
 

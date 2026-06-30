@@ -47,7 +47,7 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_ids"></a> [ids](#output\_ids) | Map of resource group name to id. |
-| <a name="output_lock_ids"></a> [lock\_ids](#output\_lock\_ids) | Map of resource group name to its management lock id. |
+| <a name="output_lock_levels"></a> [lock\_levels](#output\_lock\_levels) | Declared management lock level per resource group (applied operationally, not by the module). |
 | <a name="output_names"></a> [names](#output\_names) | Map of resource group name to name. |
 | <a name="output_tags"></a> [tags](#output\_tags) | The tag map applied to the resource groups. |
 <!-- END_TF_DOCS -->
